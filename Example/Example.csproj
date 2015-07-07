@@ -7,8 +7,8 @@
     <ProjectGuid>{2D9F3EA7-6AF8-4CB9-B9D4-F503DC38850F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NameProviderTest</RootNamespace>
-    <AssemblyName>NameProviderTest</AssemblyName>
+    <RootNamespace>NameProvider</RootNamespace>
+    <AssemblyName>NameProvider.Example</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

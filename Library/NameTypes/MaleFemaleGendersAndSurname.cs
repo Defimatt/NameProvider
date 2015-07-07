@@ -1,6 +1,6 @@
 ﻿namespace NameProvider
 {
-    public enum MaleFemaleGendersAndSurnameNameType
+    public enum MaleFemaleGendersAndSurname
     {
         Male,
         Female,

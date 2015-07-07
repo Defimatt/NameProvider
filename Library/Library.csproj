@@ -7,8 +7,8 @@
     <ProjectGuid>{5D0E07B1-18FB-4F80-AE3F-06F4F672DEB4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NameProviderLib</RootNamespace>
-    <AssemblyName>NameProviderLib</AssemblyName>
+    <RootNamespace>NameProvider</RootNamespace>
+    <AssemblyName>NameProvider</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,13 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositeNameGenerator.cs" />
     <Compile Include="NameProviders\AlphabeticalNameProvider.cs" />
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="FullNameGenerator.cs" />
     <Compile Include="NameTypes\FullNameType.cs" />
     <Compile Include="NameProviders\INameProvider.cs" />
-    <Compile Include="NameTypes\MaleFemaleGendersAndSurnameNameType.cs" />
+    <Compile Include="NameTypes\MaleFemaleGendersAndSurname.cs" />
     <Compile Include="NameBucketProvider.cs" />
     <Compile Include="NameProviders\NameProvider.cs" />
     <Compile Include="NameProviders\Factory\NameProviderFactory.cs" />
@@ -56,17 +57,16 @@
     <Compile Include="NameProviders\RandomNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NameProvider.MaleFemaleGendersAndSurnameNameType%3bFemale">
+    <None Include="NameProvider.MaleFemaleGendersAndSurname%3bFemale">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="NameProvider.MaleFemaleGendersAndSurname%3bMale">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NameProvider.MaleFemaleGendersAndSurnameNameType%3bMale">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NameProvider.MaleFemaleGendersAndSurnameNameType%3bSurname">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="NameProvider.MaleFemaleGendersAndSurname%3bSurname">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

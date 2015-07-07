@@ -8,15 +8,15 @@ namespace NameProvider
 {
     public class FullNameGenerator
     {
-        protected readonly NameProviderFactory<MaleFemaleGendersAndSurnameNameType, RandomNameProvider> ProviderFactory;
+        protected readonly NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider> ProviderFactory;
 
         public FullNameGenerator()
-            : this(new NameProviderFactory<MaleFemaleGendersAndSurnameNameType, RandomNameProvider>())
+            : this(new NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider>())
         {
         }
 
         public FullNameGenerator(
-            NameProviderFactory<MaleFemaleGendersAndSurnameNameType, RandomNameProvider> nameProviderFactory)
+            NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider> nameProviderFactory)
         {
             ProviderFactory = nameProviderFactory;
         }
@@ -24,10 +24,10 @@ namespace NameProvider
         public string NextName(FullNameType fullNameType)
         {
             return $@"{
-                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurnameNameType>(fullNameType))
+                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurname>(fullNameType))
                     .Names.Take(1)
                     .Single()} {
-                ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurnameNameType.Surname)
+                ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurname.Surname)
                     .Names.Take(1)
                     .Single()}";
         }
@@ -35,8 +35,8 @@ namespace NameProvider
         public IEnumerable<T> Names<T>(FullNameType fullNameType, Func<string, string, T> joinFunc)
         {
             return
-                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurnameNameType>(fullNameType))
-                    .Names.Zip(ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurnameNameType.Surname).Names,
+                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurname>(fullNameType))
+                    .Names.Zip(ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurname.Surname).Names,
                         joinFunc ?? ((firstName, surname) => (T)Convert.ChangeType($"{firstName} {surname}", typeof(T))));
         }
 
@@ -49,9 +49,9 @@ namespace NameProvider
         {
             return new List<IEnumerable<string>>
             {
-                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurnameNameType>(fullNameType))
+                ProviderFactory.ProviderForNameType(Parse<MaleFemaleGendersAndSurname>(fullNameType))
                     .Names,
-                ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurnameNameType.Surname).Names
+                ProviderFactory.ProviderForNameType(MaleFemaleGendersAndSurname.Surname).Names
             }.CartesianProduct().Select(_ => Join(" ", _));
         }
 
