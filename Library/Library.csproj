@@ -57,6 +57,8 @@
     <Compile Include="NameBucketProvider.cs" />
     <Compile Include="NameProviders\NameProvider.cs" />
     <Compile Include="NameProviders\Factory\NameProviderFactory.cs" />
+    <Compile Include="NoMoreNamesException.cs" />
+    <Compile Include="ProbabilisticNameFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NameProviders\RandomNameProvider.cs" />
   </ItemGroup>

@@ -11,6 +11,8 @@ namespace NameProvider
 {
     using System.Collections.ObjectModel;
 
+    using NameFormatter = System.Linq.Expressions.Expression<System.Func<string>>;
+
     internal class Example
     {
         private static NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider> np = new NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider>();
@@ -29,7 +31,7 @@ namespace NameProvider
 
             var ci = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, RandomNameProvider>(nameFormats);
             //var nn = ci.NextName();
-            //var uu = (Expression<Func<string>>)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
+            //var uu = (NameFormatter)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
 
             List<string> nameList = new List<string>();
 
@@ -45,7 +47,10 @@ namespace NameProvider
             nameList.Clear();
 
             var rnd = new Random();
-            var cp = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, AlphabeticalNameProvider>(new List<ProbabilisticNameFormatter>{ Create(() => $"{Female} the {rnd.Next(1,5).Ordinal()}, daughter of {ci.NextName()}", 100) }.AsReadOnly());
+            var cp = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, AlphabeticalNameProvider>(new List<ProbabilisticNameFormatter>{ CreateEqualChance(() => $"{Female} the {rnd.Next(1,5).Ordinal()}") }.AsReadOnly());
+
+            var cl = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, RandomNameProvider>(new List<ProbabilisticNameFormatter> { Create(() => $"{cp.NextName()}, daughter of {ci.NextName()}, heir of the lineage {Surname}", 80), Create(() => $"{cp.NextName()}, a mongrel", 20) }.AsReadOnly());
+
 
             for (int i = 0; i < 100; i++)
             {
@@ -53,11 +58,13 @@ namespace NameProvider
                 //    var malenamegenerator = $@"{string.Join(" ", np.NamesForNameType(MaleFemaleGendersAndSurname.Male).Take(random.Next(1, 3)))} {
                 //    string.Join("-", np.NamesForNameType(MaleFemaleGendersAndSurname.Surname).Take(random.Next(1, 2)))}";
 
-                nameList.Add(cp.NextName());
+                nameList.Add(cl.NextName());
             }
 
             var fnp = new FullNameGenerator();
-            
+
+            var a = cl.Names().Where(n => n.Contains("Matt")).ToList();
+
             //var maleNames = fnp.Names(Male);
             //var femaleNames = fnp.Names(Female);
 

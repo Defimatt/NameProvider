@@ -12,6 +12,8 @@ namespace NameProvider
     using System.Linq.Expressions;
     using System.Security.Policy;
 
+    using NameFormatter = System.Linq.Expressions.Expression<System.Func<string>>;
+
     public class CompositeNameGenerator<TEnum>
         where TEnum : struct, IFormattable, IConvertible, IComparable
     {
@@ -40,7 +42,7 @@ namespace NameProvider
 
         public static void SetConverter<TEnum>(
             this CompositeNameGenerator<TEnum> @this,
-            Expression<Func<string>> conversionExpression)
+            NameFormatter conversionExpression)
             where TEnum : struct, IFormattable, IConvertible, IComparable
         {
             var body = conversionExpression.Body;
@@ -53,7 +55,7 @@ namespace NameProvider
             var d = new ReadOnlyCollection<Expression>(arguments);
             //conversionExpression = conversionExpression.Update(bodyExpr.Update(bodyExpr.Object, d), null);
 
-            //var uu = (Expression<Func<string>>)(new EnumModifier<TEnum>(conversionExpression, @this).Modify(conversionExpression));
+            //var uu = (NameFormatter)(new EnumModifier<TEnum>(conversionExpression, @this).Modify(conversionExpression));
             //var u2 = uu.Compile();
 
 
