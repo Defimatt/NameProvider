@@ -29,7 +29,7 @@ namespace NameProvider
                 Create(() => $"{Male} {Male} {Male} {Surname}-{Surname}", 4)
             }).AsReadOnly();
 
-            var ci = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, RandomNameProvider>(nameFormats);
+            var ci = new CompositeNameGenerator<MaleFemaleGendersAndSurname, RandomNameProvider>(nameFormats);
             //var nn = ci.NextName();
             //var uu = (NameFormatter)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
 
@@ -47,9 +47,9 @@ namespace NameProvider
             nameList.Clear();
 
             var rnd = new Random();
-            var cp = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, AlphabeticalNameProvider>(new List<ProbabilisticNameFormatter>{ CreateEqualChance(() => $"{Female} the {rnd.Next(1,5).Ordinal()}") }.AsReadOnly());
+            var cp = new CompositeNameGenerator<MaleFemaleGendersAndSurname, AlphabeticalNameProvider>(new List<ProbabilisticNameFormatter>{ CreateEqualChance(() => $"{Female} the {rnd.Next(1,5).Ordinal()}") }.AsReadOnly());
 
-            var cl = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, RandomNameProvider>(new List<ProbabilisticNameFormatter> { Create(() => $"{cp.NextName()}, daughter of {ci.NextName()}, heir of the lineage {Surname}", 80), Create(() => $"{cp.NextName()}, a mongrel", 20) }.AsReadOnly());
+            var cl = new CompositeNameGenerator<MaleFemaleGendersAndSurname, RandomNameProvider>(new List<ProbabilisticNameFormatter> { Create(() => $"{cp.NextName()}, daughter of {ci.NextName()}, heir of the lineage {Surname}", 80), Create(() => $"{cp.NextName()}, a mongrel", 20) }.AsReadOnly());
 
 
             for (int i = 0; i < 100; i++)
@@ -63,7 +63,7 @@ namespace NameProvider
 
             var fnp = new FullNameGenerator();
 
-            var a = cl.Names().Where(n => n.Contains("Matt")).ToList();
+            var a = cl.Names().Where(n => n.Contains(" Matt ") || n.Contains(" Matthew ")).ToList();
 
             //var maleNames = fnp.Names(Male);
             //var femaleNames = fnp.Names(Female);
@@ -71,8 +71,6 @@ namespace NameProvider
             fnp = new FullNameGenerator();
             //var allNames = fnp.AllNames(Male).Take(200000).ToList();
 
-            var cng = new CompositeNameGenerator<MaleFemaleGendersAndSurname>();
-            cng.SetConverter(() => $"{Male} {(Func<IEnumerable<MaleFemaleGendersAndSurname>>)(() => Repeat(Male, new Random().Next(0, 2)))} {Surname}");
         }
     }
 
