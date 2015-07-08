@@ -46,10 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositeNameGenerator.cs" />
+    <Compile Include="DefaultNameBucketProvider.cs" />
+    <Compile Include="ExampleNameBucketProvider.cs" />
     <Compile Include="NameProviders\AlphabeticalNameProvider.cs" />
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
-    <Compile Include="FullNameGenerator.cs" />
     <Compile Include="NameTypes\FullNameType.cs" />
     <Compile Include="NameProviders\INameProvider.cs" />
     <Compile Include="NameTypes\MaleFemaleGendersAndSurname.cs" />

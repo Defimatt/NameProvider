@@ -13,6 +13,8 @@
     using static EnumHelpers;
     using static ProbabilisticNameFormatter;
 
+    
+
     public class CompositeNameGenerator<TEnum, TNameProvider>
         where TEnum : struct, IFormattable, IConvertible, IComparable
         where TNameProvider : NameProvider, new()

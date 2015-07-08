@@ -10,11 +10,6 @@ namespace NameProvider
 
     internal class Example
     {
-        private static NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider> np =
-            new NameProviderFactory<MaleFemaleGendersAndSurname, RandomNameProvider>();
-
-        private static Random random = new Random();
-
         private static void Main(string[] args)
         {
             var nameFormats =
@@ -29,6 +24,7 @@ namespace NameProvider
                  }).AsReadOnly();
 
             var ci = new CompositeNameGenerator<MaleFemaleGendersAndSurname, RandomNameProvider>(nameFormats);
+            var p = ci.NextName();
             //var nn = ci.NextName();
             //var uu = (NameFormatter)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
 
@@ -69,14 +65,14 @@ namespace NameProvider
                 nameList.Add(cl.NextName());
             }
 
-            var fnp = new FullNameGenerator();
+            //var fnp = new FullNameGenerator();
 
             var a = cl.Names().Where(n => n.Contains(" Matt ") || n.Contains(" Matthew ")).ToList();
-
+            
             //var maleNames = fnp.Names(Male);
             //var femaleNames = fnp.Names(Female);
 
-            fnp = new FullNameGenerator();
+            //fnp = new FullNameGenerator();
             //var allNames = fnp.AllNames(Male).Take(200000).ToList();
         }
     }

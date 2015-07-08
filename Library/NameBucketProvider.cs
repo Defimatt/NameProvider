@@ -1,19 +1,18 @@
-using static System.Globalization.CultureInfo;
-using static System.String;
-
 namespace NameProvider
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
+
+    public abstract class NameBucketProvider<TProvider>
+        where TProvider : NameBucketProvider<TProvider>, new()
+    {
+        public static NameBucketProvider<TProvider> Provider() { return new TProvider(); }
+    
+        public abstract IEnumerable<string> Fetch<TEnum>(TEnum nameType) where TEnum : struct, IFormattable, IConvertible, IComparable;
+    }
 
     public static class NameBucketProvider
     {
-        public static IEnumerable<string> Fetch<TEnum>(TEnum nameType) where TEnum : struct, IFormattable, IConvertible, IComparable
-        {
-            var filename = Join(";", nameType.GetType().ToString(), nameType.ToString(InvariantCulture));
-            return !File.Exists(filename) ? Enumerable.Empty<string>() : File.ReadAllLines(filename);
-        }
+        public static NameBucketProvider<DefaultNameBucketProvider> DefaultProvider() { return new DefaultNameBucketProvider(); }
     }
 }
