@@ -17,9 +17,6 @@ namespace NameProvider
             return new EqualChanceProbabilisticNameFormatter { NameFormatter = nameFormatter, Chance = 1 };
         }
 
-        public class EqualChanceProbabilisticNameFormatter : ProbabilisticNameFormatter
-        {
-            
-        }
+        public class EqualChanceProbabilisticNameFormatter : ProbabilisticNameFormatter {}
     }
 }

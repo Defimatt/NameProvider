@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-namespace NameProvider
+﻿namespace NameProvider
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+
     public class AlphabeticalNameProvider : NameProvider
     {
         public override Type Genericise<TEnum>() => typeof(AlphabeticalNameProvider<TEnum>);

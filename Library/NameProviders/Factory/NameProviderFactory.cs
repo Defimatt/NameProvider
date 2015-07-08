@@ -19,16 +19,13 @@ namespace NameProvider
                         NameProviders,
                         (providers, @enum) =>
                         providers.Concat(
-                            (INameProvider<TEnum>)
-                            CreateInstance(new TNameProvider().Genericise<TEnum>(), Fetch(@enum), @enum)))
+                            (INameProvider<TEnum>)CreateInstance(new TNameProvider().Genericise<TEnum>(), Fetch(@enum), @enum)))
                     .Where(provider => provider.Names.Any());
         }
 
-        public IEnumerable<INameProvider<TEnum>> NameProviders { get; protected set; } =
-            new List<INameProvider<TEnum>>();
+        public IEnumerable<INameProvider<TEnum>> NameProviders { get; protected set; } = new List<INameProvider<TEnum>>();
 
-        public bool Supports(TEnum nameType)
-            => NameProviders.Select(nameProvider => nameProvider.NameType).Contains(nameType);
+        public bool Supports(TEnum nameType) => NameProviders.Select(nameProvider => nameProvider.NameType).Contains(nameType);
 
         public IEnumerable<TEnum> SupportedNameTypes() => NameProviders.Select(nameProvider => nameProvider.NameType);
 

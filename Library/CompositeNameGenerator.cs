@@ -21,9 +21,7 @@
             new Dictionary<TEnum, IEnumerator<string>>(GetValues<TEnum>().Count());
 
         protected readonly EnumModifier Modifier;
-
         protected readonly StaticWeightedRandomizer<NameFormatter> NameFormatterChooser = new StaticWeightedRandomizer<NameFormatter>();
-
         protected readonly NameProviderFactory<TEnum, TNameProvider> ProviderFactory;
 
         [SuppressMessage("ReSharper", "ParameterTypeCanBeEnumerable.Local",
@@ -97,7 +95,8 @@
 
                 var operand = expression.Operand as ConstantExpression;
                 if (operand != null) NameFormatterValues.Add((TEnum)operand.Value);
-                else Assert(
+                else
+                    Assert(
                         expression.Operand.Type == typeof(TEnum) && expression.Operand.GetType() != typeof(ConstantExpression),
                         "expression.Operand.Type == typeof(TEnum) && expression.Operand.GetType() != typeof(ConstantExpression)",
                         $"expression: {expression}, operand: {expression.Operand}");

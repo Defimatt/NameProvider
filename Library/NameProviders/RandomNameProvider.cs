@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
 namespace NameProvider
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+
     public class RandomNameProvider : NameProvider
     {
         public override Type Genericise<TEnum>() => typeof(RandomNameProvider<TEnum>);
@@ -20,10 +20,12 @@ namespace NameProvider
         {
             NameType = nameType;
             var enumerable = nameBucket as string[] ?? nameBucket as IList<string> ?? nameBucket.ToList();
-            Names = Enumerable.Range(0, enumerable.Count())
-                .Select(index => new {Random = Random.Next(), Index = index})
-                .OrderBy(tuple => tuple.Random)
-                .Select(tuple => tuple.Index).Select(enumerable.ElementAt);
+            Names =
+                Enumerable.Range(0, enumerable.Count())
+                          .Select(index => new { Random = Random.Next(), Index = index })
+                          .OrderBy(tuple => tuple.Random)
+                          .Select(tuple => tuple.Index)
+                          .Select(enumerable.ElementAt);
         }
 
         public TEnum NameType { get; }
