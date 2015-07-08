@@ -1,34 +1,15 @@
 ﻿using static System.Linq.Enumerable;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using static NameProvider.MaleFemaleGendersAndSurname;
+using static NameProvider.ProbabilisticNameFormatter;
 
 namespace NameProvider
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-
-    using static MaleFemaleGendersAndSurname;
-
-    using static ProbabilisticNameFormatter;
-
-    public struct ProbabilisticNameFormatter
-    {
-        public Expression<Func<string>> NameFormatter { get; set; }
-        public double Chance { get; set; }
-
-        public static ProbabilisticNameFormatter Create(Expression<Func<string>> nameFormatter, double probability)
-        {
-            return new ProbabilisticNameFormatter { NameFormatter = nameFormatter, Chance = probability };
-        }
-    }
-
-    public static class ExtensionMethods
-    {
-        public static ProbabilisticNameFormatter AddProbability(this Expression<Func<string>> @this, double probability)
-        {
-            return new ProbabilisticNameFormatter { NameFormatter = @this, Chance = probability };
-        }
-    }
+    using System.Collections.ObjectModel;
 
     internal class Example
     {
@@ -36,7 +17,7 @@ namespace NameProvider
         private static Random random = new Random();
         private static void Main(string[] args)
         {
-            var nameFormats = new List<ProbabilisticNameFormatter>
+            var nameFormats = (new List<ProbabilisticNameFormatter>
             {
                 Create(() => $"{Male} {Surname}", 50),
                 Create(() => $"{Male} {Male} {Surname}", 20),
@@ -44,21 +25,36 @@ namespace NameProvider
                 Create(() => $"{Male} {Surname}-{Surname}", 10),
                 Create(() => $"{Male} {Male} {Surname}-{Surname}", 6),
                 Create(() => $"{Male} {Male} {Male} {Surname}-{Surname}", 4)
-            };
+            }).AsReadOnly();
 
-            var uu = (Expression<Func<string>>)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
+            var ci = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, RandomNameProvider>(nameFormats);
+            //var nn = ci.NextName();
+            //var uu = (Expression<Func<string>>)(new CompositeNameGeneratorExtensions.EnumModifier<MaleFemaleGendersAndSurname>(null, null).Modify(nameFormats[5].NameFormatter));
 
-            //List<string> nameList = new List<string>();
+            List<string> nameList = new List<string>();
 
-            //for (int i = 0; i < 300; i++)
-            //{
+            for (int i = 0; i < 300; i++)
+            {
 
             //    var malenamegenerator = $@"{string.Join(" ", np.NamesForNameType(MaleFemaleGendersAndSurname.Male).Take(random.Next(1, 3)))} {
             //    string.Join("-", np.NamesForNameType(MaleFemaleGendersAndSurname.Surname).Take(random.Next(1, 2)))}";
 
-            //    nameList.Add(malenamegenerator);
-            //}
+               nameList.Add(ci.NextName());
+            }
 
+            nameList.Clear();
+
+            var rnd = new Random();
+            var cp = new CompositeNameGenerator2<MaleFemaleGendersAndSurname, AlphabeticalNameProvider>(new List<ProbabilisticNameFormatter>{ Create(() => $"{Female} the {rnd.Next(1,5).Ordinal()}, daughter of {ci.NextName()}", 100) }.AsReadOnly());
+
+            for (int i = 0; i < 100; i++)
+            {
+
+                //    var malenamegenerator = $@"{string.Join(" ", np.NamesForNameType(MaleFemaleGendersAndSurname.Male).Take(random.Next(1, 3)))} {
+                //    string.Join("-", np.NamesForNameType(MaleFemaleGendersAndSurname.Surname).Take(random.Next(1, 2)))}";
+
+                nameList.Add(cp.NextName());
+            }
 
             var fnp = new FullNameGenerator();
             
@@ -70,6 +66,35 @@ namespace NameProvider
 
             var cng = new CompositeNameGenerator<MaleFemaleGendersAndSurname>();
             cng.SetConverter(() => $"{Male} {(Func<IEnumerable<MaleFemaleGendersAndSurname>>)(() => Repeat(Male, new Random().Next(0, 2)))} {Surname}");
+        }
+    }
+
+    public static class ExtensionMethods
+    {
+        public static string Ordinal(this int number)
+        {
+            const string TH = "th";
+            string s = number.ToString();
+
+            // Negative and zero have no ordinal representation
+            if (number < 1)
+            {
+                return s;
+            }
+
+            number %= 100;
+            if ((number >= 11) && (number <= 13))
+            {
+                return s + TH;
+            }
+
+            switch (number % 10)
+            {
+                case 1: return s + "st";
+                case 2: return s + "nd";
+                case 3: return s + "rd";
+                default: return s + TH;
+            }
         }
     }
 }
